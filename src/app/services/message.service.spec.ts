@@ -18,140 +18,159 @@ describe
     httpMock = TestBed.get(HttpTestingController);
   });
 
+  afterEach(() => {
+    httpMock.verify();
+  });
+
   it('should be created', inject([MessageService], (service: MessageService) => {
     expect(service).toBeTruthy();
   }));
 
-  describe('updateBehaviorSubject', () => {
-    it('should update currentMessage', inject([MessageService], (service: MessageService) => {
-      const message1 = new Message({
-        userName: 'mario',
-        body: 'its a me'
-      });
-      const message2 = new Message({
-        userName: 'luigi',
-        body: 'luigi?'
-      });
-      service.postMessage(message1);
-      service.postMessage(message2);
-      expect(service.messageSource.getValue()).toEqual(message2);
-    }));
+  // describe('updateBehaviorSubject', () => {
+  //   it('should update currentMessage', inject([MessageService], (service: MessageService) => {
+  //     const message1 = new Message({
+  //       userName: 'mario',
+  //       body: 'its a me'
+  //     });
+  //     const message2 = new Message({
+  //       userName: 'luigi',
+  //       body: 'luigi?'
+  //     });
+  //     service.postMessage(message1);
+  //     service.postMessage(message2);
+  //     expect(service.messageSource.getValue()).toEqual(message2);
+  //   }));
+  // });
+//   describe('getAllMessages()', () => {
+//     it('should return empty array', inject([MessageService], (service: MessageService) => {
+//       expect(service.getAllMessages()).toEqual([]);
+//     }));
+//     it('should return an empty array by default', inject([MessageService], (service: MessageService) => {
+//       expect(service.getAllMessages()).toEqual([]);
+//     }));
+//
+//     it('should return all messages', inject([MessageService], (service: MessageService) => {
+//       const message1 = new Message({
+//         userName: 'mario',
+//         body: 'its a me'
+//       });
+//       const message2 = new Message({
+//         userName: 'luigi',
+//         body: 'luigi?'
+//       });
+//       service.postMessage(message1);
+//       service.postMessage(message2);
+//       expect(service.getAllMessages()).toEqual([message1, message2]);
+//     }));
+//
+//     //   it('should get message by username', inject([MessageService], (service: MessageService) => {
+//     //     const message1 = new Message({
+//     //       userName: 'DK',
+//     //       body: 'yummy bananas'
+//     //     });
+//     //     const message2 = new Message({
+//     //       userName: 'diddy',
+//     //       body: 'mellow yellow bananas'
+//     //     });
+//     //     service.postMessage(message1);
+//     //     service.postMessage(message2);
+//     //     expect(service.getMessagesByUserName('DK')).toEqual(message1);
+//     //     expect(service.getMessagesByUserName('diddy')).toEqual(message2);
+//     //   }));
+//     // });
+//
+//     // describe('#postMessage', () => {
+//     //
+//     //   it('should automatically add id', inject([MessageService], (service: MessageService) => {
+//     //     const message1 = new Message({
+//     //       userName: 'DK',
+//     //       body: 'yummy bananas'
+//     //     });
+//     //     const message2 = new Message({
+//     //       userName: 'diddy',
+//     //       body: 'mellow yellow bananas'
+//     //     });
+//     //     service.postMessage(message1);
+//     //     service.postMessage(message2);
+//     //     expect(service.getMessagesById(1)).toEqual(message1);
+//     //     expect(service.getMessagesById(2)).toEqual(message2);
+//     //   }));
+//     // });
+//
+//     describe('#delete', () => {
+//       it('should remove message by id', inject([MessageService], (service: MessageService) => {
+//         const message1 = new Message({
+//           userName: 'toad',
+//           body: 'the princess is in another castle'
+//         });
+//         const message2 = new Message({
+//           userName: 'mario',
+//           body: 'i hate you'
+//         });
+//         service.postMessage(message1);
+//         service.postMessage(message2);
+//         expect(service.getAllMessages()).toEqual([message1, message2]);
+//         service.deleteMessageById(2);
+//         expect(service.getAllMessages()).toEqual([message1]);
+//         service.deleteMessageById(1);
+//         expect(service.getAllMessages()).toEqual([]);
+//       }));
+//
+//       it('should remove nothing if no id found', inject([MessageService], (service: MessageService) => {
+//         const message1 = new Message({
+//           userName: 'bowser',
+//           body: 'bwahahaha'
+//         });
+//         const message2 = new Message({
+//           userName: 'luigi',
+//           body: 'oh noooo'
+//         });
+//         service.postMessage(message1);
+//         service.postMessage(message2);
+//         expect(service.getAllMessages()).toEqual([message1, message2]);
+//         service.deleteMessageById(3);
+//         expect(service.getAllMessages()).toEqual([message1, message2]);
+//       }));
+//     });
+//
+//     describe('#updateMessage', () => {
+//       it('should update the message', inject([MessageService], (service: MessageService) => {
+//         const message1 = new Message({
+//           userName: 'mario',
+//           body: 'its a me'
+//         });
+//         service.postMessage(message1);
+//         service.updateMessageById(1, {body: 'pasta, pasta, pasta'});
+//         expect(message1.content).toEqual('pasta, pasta, pasta');
+//       }));
+//
+//       it('should return null if no id found', inject([MessageService], (service: MessageService) => {
+//         const message1 = new Message({
+//           userName: 'mario',
+//           body: 'its a me'
+//         });
+//         service.postMessage(message1);
+//         const updated: Message = service.updateMessageById(2, {body: 'where\'s the message?'});
+//         expect(updated).toEqual(null);
+//       }));
+//     });
+//   });
+
+   const exampleMessageJson = '{"messageId": 100, "userId": 12, "threadId": 12, "timestamp": "TimeyWimey"}';
+  it('should create one get request to the server mapping', () => {
+    messageService.getAllMessages();
+    httpMock.expectOne('https://nameless-peak-71330.herokuapp.com/messages');
   });
-  describe('getAllMessages()', () => {
-    it('should return empty array', inject([MessageService], (service: MessageService) => {
-      expect(service.getAllMessages()).toEqual([]);
-    }));
-    it('should return an empty array by default', inject([MessageService], (service: MessageService) => {
-      expect(service.getAllMessages()).toEqual([]);
-    }));
 
-    it('should return all messages', inject([MessageService], (service: MessageService) => {
-      const message1 = new Message({
-        userName: 'mario',
-        body: 'its a me'
-      });
-      const message2 = new Message({
-        userName: 'luigi',
-        body: 'luigi?'
-      });
-      service.postMessage(message1);
-      service.postMessage(message2);
-      expect(service.getAllMessages()).toEqual([message1, message2]);
-    }));
+  it('should make one poster', () => {
+    messageService.deleteMessageById(2);
+    httpMock.expectOne('https://nameless-peak-71330.herokuapp.com/messages/2');
 
-    //   it('should get message by username', inject([MessageService], (service: MessageService) => {
-    //     const message1 = new Message({
-    //       userName: 'DK',
-    //       body: 'yummy bananas'
-    //     });
-    //     const message2 = new Message({
-    //       userName: 'diddy',
-    //       body: 'mellow yellow bananas'
-    //     });
-    //     service.postMessage(message1);
-    //     service.postMessage(message2);
-    //     expect(service.getMessagesByUserName('DK')).toEqual(message1);
-    //     expect(service.getMessagesByUserName('diddy')).toEqual(message2);
-    //   }));
-    // });
-
-    // describe('#postMessage', () => {
-    //
-    //   it('should automatically add id', inject([MessageService], (service: MessageService) => {
-    //     const message1 = new Message({
-    //       userName: 'DK',
-    //       body: 'yummy bananas'
-    //     });
-    //     const message2 = new Message({
-    //       userName: 'diddy',
-    //       body: 'mellow yellow bananas'
-    //     });
-    //     service.postMessage(message1);
-    //     service.postMessage(message2);
-    //     expect(service.getMessagesById(1)).toEqual(message1);
-    //     expect(service.getMessagesById(2)).toEqual(message2);
-    //   }));
-    // });
-
-    describe('#delete', () => {
-      it('should remove message by id', inject([MessageService], (service: MessageService) => {
-        const message1 = new Message({
-          userName: 'toad',
-          body: 'the princess is in another castle'
-        });
-        const message2 = new Message({
-          userName: 'mario',
-          body: 'i hate you'
-        });
-        service.postMessage(message1);
-        service.postMessage(message2);
-        expect(service.getAllMessages()).toEqual([message1, message2]);
-        service.deleteMessageById(2);
-        expect(service.getAllMessages()).toEqual([message1]);
-        service.deleteMessageById(1);
-        expect(service.getAllMessages()).toEqual([]);
-      }));
-
-      it('should remove nothing if no id found', inject([MessageService], (service: MessageService) => {
-        const message1 = new Message({
-          userName: 'bowser',
-          body: 'bwahahaha'
-        });
-        const message2 = new Message({
-          userName: 'luigi',
-          body: 'oh noooo'
-        });
-        service.postMessage(message1);
-        service.postMessage(message2);
-        expect(service.getAllMessages()).toEqual([message1, message2]);
-        service.deleteMessageById(3);
-        expect(service.getAllMessages()).toEqual([message1, message2]);
-      }));
-    });
-
-    describe('#updateMessage', () => {
-      it('should update the message', inject([MessageService], (service: MessageService) => {
-        const message1 = new Message({
-          userName: 'mario',
-          body: 'its a me'
-        });
-        service.postMessage(message1);
-        service.updateMessageById(1, {body: 'pasta, pasta, pasta'});
-        expect(message1.content).toEqual('pasta, pasta, pasta');
-      }));
-
-      it('should return null if no id found', inject([MessageService], (service: MessageService) => {
-        const message1 = new Message({
-          userName: 'mario',
-          body: 'its a me'
-        });
-        service.postMessage(message1);
-        const updated: Message = service.updateMessageById(2, {body: 'where\'s the message?'});
-        expect(updated).toEqual(null);
-      }));
-    });
   });
 
-   // exampleMessageJson: string = "{\"messageId\": -100, \"userId\": -100, \"threadId\": -100, \"timestamp\": \"TimeyWimey\"}";
+  it('should make get request to the server for a message by id', () => {
+    messageService.getMessageById(1);
+    httpMock.expectOne('https://nameless-peak-71330.herokuapp.com/messages/1');
+  });
 
 });

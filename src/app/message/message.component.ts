@@ -3,9 +3,9 @@ import {MessageService} from '../services/message.service';
 import {Message} from '../models/message.model';
 
 @Component({
-  selector: 'app-message',
-  templateUrl: './message.component.html',
-  styleUrls: ['./message.component.css']
+  selector: 'app-message'
+  // templateUrl: './message.component.html',
+  // styleUrls: ['./message.component.css']
 })
 export class MessageComponent implements OnInit {
 

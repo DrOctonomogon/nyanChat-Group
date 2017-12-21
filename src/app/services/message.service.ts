@@ -49,16 +49,8 @@ export class MessageService {
   }
 
   getMessageById(id: number): Message {
-    const getMessage = this.http.get<Message>(this.messagesUrl + '/{{messageId}}');
+    const getMessage = this.http.get<Message>(this.messagesUrl + '/' + id);
     let returnMessage: Message;
-    // getMessages.subscribe(next => {
-    //   const tempMessages: Message[] = [];
-    //   for (const x in next) {
-    //     tempMessages.push(new Message(next[x]));
-    //     console.log(next[x]);
-    //   }
-    //   this.messages = tempMessages;
-    // });
     getMessage.subscribe(next => {
       returnMessage = new Message(next);
     });
@@ -66,9 +58,10 @@ export class MessageService {
   }
 
 
-  deleteMessageById(id: number): MessageService {
+  deleteMessageById(id: number): any {
+    let deleteMessage = this.getMessageById(id);
     this.messages = this.messages.filter(message => message.messageId !== id);
-    return this;
+    return this.http.delete(this.messagesUrl + '/' + id, this.httpOptions);
   }
 
   updateMessageById(id: number, values: Object = {}): Message {
