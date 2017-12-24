@@ -12,6 +12,8 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { MessageService} from './services/message.service';
 import { HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './login/login.component';
+import {UsersComponent} from './users/users.component';
+import {UsersService} from './services/users.service';
 
 @NgModule({
   declarations: [
@@ -21,6 +23,7 @@ import { LoginComponent } from './login/login.component';
     PostMessageComponent,
     HeadingImageComponent,
     SidebarComponent,
+    UsersComponent,
     LoginComponent
   ],
   imports: [
@@ -29,7 +32,8 @@ import { LoginComponent } from './login/login.component';
     ReactiveFormsModule,
     HttpClientModule
   ],
-  providers: [MessageService],
+  providers: [MessageService,
+  UsersService],
   bootstrap: [AppComponent]
 
 })

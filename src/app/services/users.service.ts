@@ -1,25 +1,27 @@
 import { Injectable } from '@angular/core';
 import {User} from '../models/user.model';
+import {API_URL} from '../../environments/environment';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Credentials} from '../models/credentials.model';
 
 @Injectable()
 export class UsersService {
 
-  constructor() {}
+  private usersUrl = API_URL + '/users';
 
-  createUser(): User {
+  httpOptions = {headers: new HttpHeaders({'Content-Type': 'application/json'})};
 
 
-    return null;
+  constructor(private http: HttpClient) {}
+
+  addUser(user: User): User {
+    this.http.post(this.usersUrl, user, this.httpOptions);
+    return user;
   }
 
-  updateUser(): boolean{
-
-    return null;
-  }
-
-  verifyUser(): boolean {
-
-    return null;
+//userName: string, password: string
+  verifyUser(credentials: Credentials) {
+    this.http.post(this.usersUrl,credentials, this.httpOptions);
   }
 
 

@@ -13,10 +13,10 @@ export class PostMessageComponent implements OnInit {
 
   @Input()
   logMsg() {
-    if(this.str.length > 0) {
+    if (this.str.length > 0) {
 
       const temp = new Message({userId: 1, content: this.str});
-      console.log(temp)
+      console.log(temp);
       this.messageService.postMessage(temp);
       this.str = '';
     }

@@ -1,17 +1,19 @@
 #login {
-  display: none;
+  display: block;
   width: 95%;
   height: max-content;
-  background: grey;
-  color: white;
+  background: linear-gradient(red, orange, yellow, green, blue, indigo, violet);
   padding: 3%;
-  
+  border-radius: 10px;
+  box-shadow: 2px 2px 12px black;
 }
 
 input {
   margin: 1%;
+  border-radius: 10px;
 }
 
-.btn-primary {
-
+input #btn-primary {
+  margin: 0 auto;
+  border-radius: 10px;
 }
